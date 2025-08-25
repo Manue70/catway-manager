@@ -14,15 +14,15 @@ dotenv.config();
 
 const app = express();
 
+// Définir le port pour Render
+const PORT = process.env.PORT || 5000;
+
 app.use(cors({
   origin: process.env.CLIENT_URL || "*",
   credentials: true,
 }));
 
 
-
-
-// Middlewares
 app.use(express.json());
 
 // Routes
@@ -32,11 +32,11 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/addReservation", addReservationRoutes);
 app.use("/api/users", usersRouter);
 
-// Connexion MongoDB
+
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("✅ MongoDB connecté");
-    app.listen(PORT, () => console.log("🚀 Serveur démarré sur le port ${PORT}` "));
+    app.listen(PORT, () => console.log(`🚀 Serveur démarré sur le port ${PORT}`));
   })
   .catch((err) => console.error("Erreur MongoDB:", err));
