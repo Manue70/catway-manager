@@ -1,0 +1,105 @@
+
+/* Conteneur central */
+.CatwaysContainer {
+  background: #ffffffcc; /* blanc semi-transparent */
+  padding: 50px 30px 30px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  max-width: 700px;
+  width: 85%;
+  margin: 20px auto;
+  text-align: center;
+  color: #000; /* texte en noir par défaut */
+}
+
+/* Titre */
+.catways-title {
+  margin-top: 30px;
+  margin-bottom: 25px;
+  color: #003366;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  font-size: 28px;
+}
+
+/* Boutons */
+.btnCatway {
+  background-color: #007bff;
+  color: #fff; /* bouton texte blanc */
+  padding: 8px 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.btnCatway:hover {
+  background-color: #0056b3;
+}
+
+.btnDelete {
+  color: red;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Tableau */
+.CatwaysContainer table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  color: #000; /* texte du tableau en noir */
+}
+
+.CatwaysContainer th, .CatwaysContainer td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #e6f0ff;
+  color: #000; /* force le texte en noir */
+}
+
+.CatwaysContainer th {
+  background-color: #007bff;
+  color: #fff; /* titre en blanc pour contraste */
+}
+
+.CatwaysContainer tr:nth-child(even) td {
+  background-color: #f2f9ff;
+}
+
+.CatwaysContainer tr:hover td {
+  background-color: #cce5ff;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+   background-color: #007bff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.modalContent form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}

@@ -1,0 +1,243 @@
+
+openapi: 3.0.3
+info:
+  title: Catway Manager API
+  description: API pour gérer les catways, les réservations et les clients d’un port.
+  version: "1.0.0"
+
+servers:
+  - url: http://localhost:5000
+    description: Serveur local
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Catway:
+      type: object
+      properties:
+        _id:
+          type: string
+        catwayNumber:
+          type: string
+        catwayType:
+          type: string
+        catwayState:
+          type: string
+    Reservation:
+      type: object
+      properties:
+        _id:
+          type: string
+        catwayName:
+          type: string
+        boatName:
+          type: string
+        clientName:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+
+security:
+  - bearerAuth: []
+
+paths:
+  /api/auth/login:
+    post:
+      summary: Connexion d'un utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Connexion réussie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  role:
+                    type: string
+        '401':
+          description: Email ou mot de passe incorrect
+
+  /api/catways:
+    get:
+      summary: Récupérer tous les catways
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste des catways
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Catway'
+    post:
+      summary: Créer un catway (Admin uniquement)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Catway'
+      responses:
+        '201':
+          description: Catway créé
+
+  /api/catways/{id}:
+    delete:
+      summary: Supprimer un catway (Admin uniquement)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Catway supprimé
+
+  /api/reservations:
+    get:
+      summary: Récupérer toutes les réservations
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste des réservations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation'
+    post:
+      summary: Créer une réservation
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reservation'
+      responses:
+        '201':
+          description: Réservation créée
+
+  /api/reservations/{id}:
+    put:
+      summary: Modifier une réservation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                startDate:
+                  type: string
+                  format: date
+                endDate:
+                  type: string
+                  format: date
+      responses:
+        '200':
+          description: Réservation modifiée
+    delete:
+      summary: Supprimer une réservation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Réservation supprimée
+
+  /api/users:
+    get:
+      summary: Récupérer tous les utilisateurs (Admin)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste des utilisateurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Créer un utilisateur (Admin)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Utilisateur créé
+
+  /api/users/{id}:
+    delete:
+      summary: Supprimer un utilisateur (Admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Utilisateur supprimé

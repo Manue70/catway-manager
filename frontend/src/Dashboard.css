@@ -1,0 +1,82 @@
+
+/* Conteneur principal */
+.dashboard-container {
+  
+  min-height: 100vh;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centre les enfants horizontalement */
+  text-align: center;  /* centre h2, h3, p */
+}
+
+/* Tableau centré */
+.reservations-table {
+  width: 80%;
+  max-width: 1000px;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #3b82f6; /* bleu plus clair */
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* En-tête du tableau */
+.reservations-table th {
+  background-color: #2563eb; /* bleu intermédiaire */
+  padding: 12px;
+}
+
+/* Lignes du tableau */
+.reservations-table td {
+  padding: 12px;
+  border-bottom: 1px solid #1e40af; /* ligne bleue foncée */
+  transition: background-color 0.3s;
+}
+
+/* Hover sur les lignes */
+.reservations-table tbody tr:hover {
+  background-color: #60a5fa; /* bleu clair */
+  color: #1e3a8a;
+  transform: scale(1.01);
+}
+
+/* Boutons */
+.reservations-table button {
+  margin: 2px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #60a5fa; /* bleu clair */
+  color: #1e3a8a;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.reservations-table button:hover {
+  background-color: #2563eb; /* bleu intermédiaire */
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Inputs date */
+.reservations-table input[type="date"] {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #93c5fd;
+  transition: border-color 0.3s;
+}
+
+.reservations-table input[type="date"]:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+

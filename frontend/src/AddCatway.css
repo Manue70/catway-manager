@@ -1,0 +1,85 @@
+
+/* Conteneur principal centré */
+.CatwaysContainer {
+  background-color: #1e3a8a; /* bleu foncé */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Titre */
+.CatwaysContainer h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #60a5fa; /* bleu clair */
+}
+
+/* Message d'erreur / succès */
+.CatwaysContainer p {
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: red;
+}
+
+/* Formulaire */
+.CatwaysContainer form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  background-color: #2563eb; /* bleu intermédiaire */
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  width: 300px;
+}
+
+/* Labels */
+.CatwaysContainer label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+/* Inputs */
+.CatwaysContainer input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #93c5fd;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.CatwaysContainer input:focus {
+  border-color: #60a5fa;
+  outline: none;
+}
+
+/* Bouton */
+.CatwaysContainer button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #60a5fa;
+  color: #1e3a8a;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: center;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.CatwaysContainer button:hover {
+  background-color: #2563eb;
+  color: #fff;
+  transform: scale(1.05);
+}

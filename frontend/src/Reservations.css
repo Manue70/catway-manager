@@ -1,0 +1,52 @@
+
+/* Conteneur central */
+.ReservationsContainer {
+  background:#1e3a8a; ; /* blanc semi-transparent */
+  
+  padding: 50px 30px 30px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  max-width: 700px;
+  width: 85%;
+  margin: 20px auto;
+  text-align: center;
+  color: #000; /* texte en noir */
+}
+
+/* Titre */
+.Reservations-title {
+  margin-top: 30px;
+  margin-bottom: 25px;
+  color: #003366; /* bleu foncé cohérent avec le site */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  font-size: 28px;
+}
+
+/* Tableau */
+.ReservationsContainer table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  color: #000; /* texte du tableau en noir */
+}
+
+.ReservationsContainer th, .ReservationsContainer td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #e6f0ff; /* bleu très clair */
+  color: #000; /* texte en noir */
+}
+
+.ReservationsContainer th {
+  background-color: #007bff; /* bleu intermédiaire */
+  color: #fff; /* titre en blanc pour contraste */
+}
+
+.ReservationsContainer tr:nth-child(even) td {
+  background-color: #f2f9ff; /* bleu très clair alternatif */
+}
+
+.ReservationsContainer tr:hover td {
+  background-color: #cce5ff; /* bleu clair au survol */
+}
+

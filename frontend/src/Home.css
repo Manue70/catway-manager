@@ -1,0 +1,95 @@
+
+/* Conteneur principal centré */
+.home-container {
+  
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Titre */
+.home-container h1 {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+  color: #000203; /* bleu clair */
+}
+
+
+.home-container p {
+  margin-bottom: 30px;
+  color: #f7f0f0;
+  font-size: 1rem;
+}
+
+/* Formulaire */
+.home-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  background-color: #2563eb; /* bleu intermédiaire */
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+/* Inputs */
+.home-container input {
+  padding: 10px;
+  width: 250px;
+  border-radius: 5px;
+  border: 1px solid #93c5fd;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.home-container input:focus {
+  border-color: #60a5fa;
+  outline: none;
+}
+
+/* Bouton */
+.home-container button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #60a5fa;
+  color: #1e3a8a;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.home-container button:hover {
+  background-color: #2563eb;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.home-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* centre horizontalement */
+  justify-content: center; /* centre verticalement dans son conteneur */
+  gap: 10px;             /* espace entre les liens */
+  
+  background-color: #2563eb;
+}
+
+.home-links a {
+  font-size: 1.2rem;     /* texte un peu plus grand */
+  color: #050f1b;        /* bleu clair */
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.home-links a:hover {
+  color: #2563eb;        /* bleu intermédiaire au survol */
+}
