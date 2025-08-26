@@ -28,10 +28,10 @@ app.use("/api/users", usersRouter);
 
 // Servir le build Vite (frontend/dist)
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "frontend/dist")));
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
+  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
 
 // Connexion MongoDB et démarrage du serveur
