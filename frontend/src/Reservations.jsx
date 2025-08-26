@@ -31,7 +31,7 @@ function Reservations() {
         <tbody>
           {reservations.map((resv) => (
             <tr key={resv._id}>
-              <td>{resv.catwayName}</td>
+              <td>{resv.catwayNumber}</td>
               <td>{resv.boatName}</td>
               <td>{resv.clientName}</td>
               <td>{resv.startDate}</td>
