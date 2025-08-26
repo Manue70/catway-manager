@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import { API_URL } from "../config";
 import "./Clients.css";
 
 function Clients({ token }) {
@@ -7,13 +8,12 @@ function Clients({ token }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [newUser, setNewUser] = useState({ email: "", password: "", role: "client" });
-  const [selectedUser, setSelectedUser] = useState(null); // Pour afficher les détails
+  const [selectedUser, setSelectedUser] = useState(null);
 
-  // Récupérer tous les utilisateurs (défini à l'intérieur de useEffect pour ESLint)
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/users", {
+        const res = await fetch(`${API_URL}/api/users`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -30,15 +30,13 @@ function Clients({ token }) {
         setLoading(false);
       }
     };
-
     fetchUsers();
-  }, [token]); // ✅ Dépendance correcte, plus de warning
+  }, [token]);
 
-  // Supprimer un utilisateur
   const handleDelete = async (id) => {
     if (!window.confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+      const res = await fetch(`${API_URL}/api/users/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -55,11 +53,10 @@ function Clients({ token }) {
     }
   };
 
-  // Créer un nouvel utilisateur
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/users", {
+      const res = await fetch(`${API_URL}/api/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,10 +75,9 @@ function Clients({ token }) {
     }
   };
 
-  // Afficher les détails d’un utilisateur dans la page
   const handleDetails = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+      const res = await fetch(`${API_URL}/api/users/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -103,33 +99,16 @@ function Clients({ token }) {
   return (
     <div className="ClientsContainer">
       <h2>Gestion des Clients</h2>
-
       {/* Formulaire création */}
       <form onSubmit={handleCreate} className="createUserForm">
-        <input
-          type="email"
-          placeholder="Email"
-          value={newUser.email}
-          onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={newUser.password}
-          onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-          required
-        />
-        <select
-          value={newUser.role}
-          onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-        >
+        <input type="email" placeholder="Email" value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} required />
+        <input type="password" placeholder="Mot de passe" value={newUser.password} onChange={(e) => setNewUser({ ...newUser, password: e.target.value })} required />
+        <select value={newUser.role} onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}>
           <option value="client">Client</option>
           <option value="admin">Admin</option>
         </select>
         <button type="submit">Créer</button>
       </form>
-
       {/* Tableau des utilisateurs */}
       {users.length === 0 ? (
         <p>Aucun utilisateur disponible</p>
@@ -156,17 +135,12 @@ function Clients({ token }) {
           </tbody>
         </table>
       )}
-
       {/* Affichage des détails */}
       {selectedUser && (
         <div className="userDetails">
           <h3>Détails de l'utilisateur</h3>
-          <p>
-            <strong>Email:</strong> {selectedUser.email}
-          </p>
-          <p>
-            <strong>Rôle:</strong> {selectedUser.role}
-          </p>
+          <p><strong>Email:</strong> {selectedUser.email}</p>
+          <p><strong>Rôle:</strong> {selectedUser.role}</p>
           <button onClick={() => setSelectedUser(null)}>Fermer</button>
         </div>
       )}

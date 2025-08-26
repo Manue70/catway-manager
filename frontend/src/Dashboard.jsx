@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { format } from "date-fns";
+import { API_URL } from "../config";
 import "./Dashboard.css";
 
 function Dashboard({ token }) {
@@ -9,9 +10,8 @@ function Dashboard({ token }) {
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({ startDate: "", endDate: "" });
 
-  // Récupérer les réservations
   const fetchReservations = useCallback(() => {
-    fetch("http://localhost:5000/api/reservations", {
+    fetch(`${API_URL}/api/reservations`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -20,19 +20,14 @@ function Dashboard({ token }) {
   }, [token]);
 
   useEffect(() => {
-    // Infos utilisateur
-    setUserInfo({
-      name: "Capitainerie",
-      email: "capitainerie@example.com",
-    });
-
+    setUserInfo({ name: "Capitainerie", email: "capitainerie@example.com" });
     fetchReservations();
   }, [fetchReservations]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Voulez-vous vraiment supprimer cette réservation ?")) return;
 
-    await fetch(`http://localhost:5000/api/reservations/${id}`, {
+    await fetch(`${API_URL}/api/reservations/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -46,7 +41,7 @@ function Dashboard({ token }) {
   };
 
   const handleUpdate = async (id) => {
-    await fetch(`http://localhost:5000/api/reservations/${id}`, {
+    await fetch(`${API_URL}/api/reservations/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -62,9 +57,7 @@ function Dashboard({ token }) {
   return (
     <div className="dashboard-container">
       <h2>Tableau de bord</h2>
-      <p>
-        Utilisateur connecté : {userInfo.name} ({userInfo.email})
-      </p>
+      <p>Utilisateur connecté : {userInfo.name} ({userInfo.email})</p>
       <p>Date du jour : {format(new Date(), "dd/MM/yyyy")}</p>
 
       <h3>Réservations en cours</h3>
@@ -90,9 +83,7 @@ function Dashboard({ token }) {
                   <input
                     type="date"
                     value={formData.startDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, startDate: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                   />
                 ) : (
                   resv.startDate
@@ -103,9 +94,7 @@ function Dashboard({ token }) {
                   <input
                     type="date"
                     value={formData.endDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, endDate: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
                   />
                 ) : (
                   resv.endDate

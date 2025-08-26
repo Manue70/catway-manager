@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
 
 function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
@@ -9,24 +10,18 @@ function Login({ onLoginSuccess }) {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    setError(""); // Réinitialise l'erreur
+    setError("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-      // Vérification si la réponse est du JSON
       const text = await res.text();
       let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        console.error("Réponse non JSON :", text);
-        throw new Error("Le serveur n'a pas renvoyé de JSON valide");
-      }
+      try { data = JSON.parse(text); } catch { throw new Error("Le serveur n'a pas renvoyé de JSON valide"); }
 
       if (res.ok && data.token && data.role) {
         localStorage.setItem("token", data.token);
@@ -47,25 +42,12 @@ function Login({ onLoginSuccess }) {
       <h2>Login Capitainerie</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ display: "block", marginBottom: "10px", width: "100%" }}
-      />
-      <input
-        type="password"
-        placeholder="Mot de passe"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ display: "block", marginBottom: "10px", width: "100%" }}
-      />
-      <button onClick={handleLogin} style={{ width: "100%" }}>
-        Se connecter
-      </button>
+      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ display: "block", marginBottom: "10px", width: "100%" }} />
+      <input type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} style={{ display: "block", marginBottom: "10px", width: "100%" }} />
+      <button onClick={handleLogin} style={{ width: "100%" }}>Se connecter</button>
     </div>
   );
 }
 
 export default Login;
+

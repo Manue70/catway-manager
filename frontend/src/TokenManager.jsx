@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { API_URL } from "../config";
 
 function TokenManager() {
   const [email, setEmail] = useState("");
@@ -11,7 +12,7 @@ function TokenManager() {
   const loginAndFetch = async () => {
     try {
       // 1️⃣ Connexion pour générer token
-      const loginRes = await fetch("http://localhost:5000/api/auth/login", {
+      const loginRes = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -31,7 +32,7 @@ function TokenManager() {
       setError("");
 
       // 2️⃣ Test fetch avec token
-      const testRes = await fetch("http://localhost:5000/api/catways", {
+      const testRes = await fetch(`${API_URL}/api/catways`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${newToken}`,
@@ -93,3 +94,4 @@ function TokenManager() {
 }
 
 export default TokenManager;
+

@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-
+import { API_URL } from "../config";
 
 function AddReservation({ token }) {
   const [form, setForm] = useState({
@@ -17,21 +17,26 @@ function AddReservation({ token }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:5000/api/reservations", {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch(`${API_URL}/api/reservations`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(form),
+      });
 
-    if (res.ok) {
-      alert("Réservation ajoutée !");
-      setForm({ catwayId: "", boatName: "", clientName: "", startDate: "", endDate: "" });
-    } else {
-      const err = await res.json();
-      alert(err.error || "Erreur lors de l'ajout !");
+      if (res.ok) {
+        alert("Réservation ajoutée !");
+        setForm({ catwayId: "", boatName: "", clientName: "", startDate: "", endDate: "" });
+      } else {
+        const err = await res.json();
+        alert(err.error || "Erreur lors de l'ajout !");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erreur réseau ou token invalide");
     }
   };
 
@@ -51,3 +56,4 @@ function AddReservation({ token }) {
 }
 
 export default AddReservation;
+

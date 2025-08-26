@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { API_URL } from "../config";
 import "./Catways.css";
 
 function Catways({ token, userRole }) {
@@ -21,7 +21,7 @@ function Catways({ token, userRole }) {
   useEffect(() => {
     async function fetchCatways() {
       try {
-        const res = await fetch("http://localhost:5000/api/catways", {
+        const res = await fetch(`${API_URL}/api/catways`, {
           headers: {
             "Content-Type": "application/json",
             ...(token && { Authorization: `Bearer ${token}` }),
@@ -29,7 +29,6 @@ function Catways({ token, userRole }) {
         });
 
         if (!res.ok) throw new Error(`Erreur ${res.status}`);
-
         const data = await res.json();
 
         if (Array.isArray(data)) setCatways(data);
@@ -51,7 +50,7 @@ function Catways({ token, userRole }) {
     if (!window.confirm("Voulez-vous vraiment supprimer ce catway ?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/catways/${id}`, {
+      const res = await fetch(`${API_URL}/api/catways/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +59,6 @@ function Catways({ token, userRole }) {
       });
 
       if (!res.ok) throw new Error("Erreur suppression");
-
       setCatways(catways.filter((c) => c._id !== id));
       alert("Catway supprimé !");
     } catch (err) {
@@ -69,31 +67,27 @@ function Catways({ token, userRole }) {
     }
   };
 
-  // Ouvrir la modale de réservation
   const handleReserve = (catway) => {
     setSelectedCatway(catway);
     setShowModal(true);
   };
 
-  // Fermer la modale
   const closeModal = () => {
     setSelectedCatway(null);
     setShowModal(false);
     setReservationData({ clientName: "", startDate: "", endDate: "" });
   };
 
-  // Gérer les changements dans le formulaire
   const handleChange = (e) => {
     setReservationData({ ...reservationData, [e.target.name]: e.target.value });
   };
 
-  // Soumettre la réservation
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedCatway) return;
 
     try {
-      const res = await fetch("http://localhost:5000/api/reservations", {
+      const res = await fetch(`${API_URL}/api/reservations`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,7 +100,6 @@ function Catways({ token, userRole }) {
       });
 
       if (!res.ok) throw new Error("Erreur lors de la réservation");
-
       alert("Réservation effectuée !");
       closeModal();
     } catch (err) {
@@ -163,7 +156,6 @@ function Catways({ token, userRole }) {
         </table>
       </div>
 
-      {/* Modale de réservation */}
       {showModal && (
         <div className="modalOverlay">
           <div className="modalContent">
@@ -214,3 +206,4 @@ function Catways({ token, userRole }) {
 }
 
 export default Catways;
+

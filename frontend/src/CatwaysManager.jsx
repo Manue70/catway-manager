@@ -1,12 +1,13 @@
 
 import React, { useEffect, useState } from "react";
+import { API_URL } from "../config";
 import "./Catways.css";
 
 function CatwaysManager({ token }) {
   const [catways, setCatways] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/catways", {
+    fetch(`${API_URL}/api/catways`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -16,7 +17,7 @@ function CatwaysManager({ token }) {
 
   const handleDelete = (id) => {
     if (!window.confirm("Supprimer ce catway ?")) return;
-    fetch(`http://localhost:5000/api/catways/${id}`, {
+    fetch(`${API_URL}/api/catways/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     }).then(() => setCatways(catways.filter((c) => c._id !== id)));
@@ -42,10 +43,7 @@ function CatwaysManager({ token }) {
               <td>{catway.catwayState}</td>
               <td>
                 <button>Modifier</button>{" "}
-                <button
-                  className="btnDelete"
-                  onClick={() => handleDelete(catway._id)}
-                >
+                <button className="btnDelete" onClick={() => handleDelete(catway._id)}>
                   Supprimer
                 </button>
               </td>
@@ -58,4 +56,3 @@ function CatwaysManager({ token }) {
 }
 
 export default CatwaysManager;
-

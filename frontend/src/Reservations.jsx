@@ -1,20 +1,19 @@
 
 import React, { useEffect, useState } from "react";
-import "./Reservations.css"; // <-- nouveau fichier CSS
+import { API_URL } from "../config";
+import "./Reservations.css";
 
 function Reservations() {
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/reservations")
+    fetch(`${API_URL}/api/reservations`)
       .then((res) => res.json())
       .then((data) => setReservations(data))
       .catch((err) => console.error(err));
   }, []);
 
-  if (reservations.length === 0) {
-    return <p>Aucune réservation trouvée.</p>;
-  }
+  if (reservations.length === 0) return <p>Aucune réservation trouvée.</p>;
 
   return (
     <div className="ReservationsContainer">
