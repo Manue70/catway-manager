@@ -9,7 +9,8 @@ function Login({ onLoginSuccess }) {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setError("");
 
     try {
@@ -19,17 +20,20 @@ function Login({ onLoginSuccess }) {
         body: JSON.stringify({ email, password }),
       });
 
-      const text = await res.text();
-      let data;
-      try { data = JSON.parse(text); } catch { throw new Error("Le serveur n'a pas renvoyé de JSON valide"); }
+      const data = await res.json(); // JSON direct
 
       if (res.ok && data.token && data.role) {
+        // Enregistre token et role
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
+
+        // Appel de la fonction parent
         onLoginSuccess(data.token, data.role);
+
+        // Redirection vers /catways
         navigate("/catways");
       } else {
-        setError(data.message || "Impossible de se connecter");
+        setError(data.message || "Email ou mot de passe incorrect");
       }
     } catch (err) {
       console.error("Erreur login :", err);
@@ -42,9 +46,27 @@ function Login({ onLoginSuccess }) {
       <h2>Login Capitainerie</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ display: "block", marginBottom: "10px", width: "100%" }} />
-      <input type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} style={{ display: "block", marginBottom: "10px", width: "100%" }} />
-      <button onClick={handleLogin} style={{ width: "100%" }}>Se connecter</button>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{ display: "block", marginBottom: "10px", width: "100%" }}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Mot de passe"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ display: "block", marginBottom: "10px", width: "100%" }}
+          required
+        />
+        <button type="submit" style={{ width: "100%" }}>
+          Se connecter
+        </button>
+      </form>
     </div>
   );
 }
