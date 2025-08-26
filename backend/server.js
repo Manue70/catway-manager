@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import fs from "fs";
 
 import authRoutes from "./routes/auth.js";
 import catwayRoutes from "./routes/catways.js";
@@ -19,8 +20,8 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // Vite dev local
-      "https://catway-manager-1.onrender.com", // Render
+      "http://localhost:5173",
+      "https://catway-manager-1.onrender.com",
     ],
   })
 );
@@ -33,23 +34,19 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/addReservation", addReservationRoutes);
 app.use("/api/users", usersRouter);
 
-// Servir le build frontend Vite
-import fs from "fs";
-
-const frontendDistPath = path.join(process.cwd(), "frontend/dist");
+// Servir le build Vite
+let frontendDistPath = path.join(process.cwd(), "frontend/dist");
 
 if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
-
-  // Pour toutes les routes non-API, renvoyer index.html
-  app.get(/^(?!\/api).*$/, (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.join(frontendDistPath, "index.html"));
   });
 } else {
   console.warn("⚠️ Build frontend introuvable ! Le frontend sera inaccessible.");
 }
 
-// Connexion MongoDB et démarrage du serveur
+// Connexion MongoDB et lancement du serveur
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
