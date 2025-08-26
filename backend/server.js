@@ -4,8 +4,6 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url"; // <-- pour __dirname en ES module
 
 import authRoutes from "./routes/auth.js";
 import catwayRoutes from "./routes/catways.js";
@@ -35,27 +33,20 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/addReservation", addReservationRoutes);
 app.use("/api/users", usersRouter);
 
-// --- Servir le build Vite (frontend/dist) ---
-// Création de __dirname en ES Module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Servir le build frontend Vite
+import fs from "fs";
 
-let frontendDistPath = path.join(__dirname, "../frontend/dist");
-
-// Si le build n’existe pas, on tente un chemin relatif au root (Render)
-if (!fs.existsSync(frontendDistPath)) {
-  frontendDistPath = path.join(process.cwd(), "frontend/dist");
-}
+const frontendDistPath = path.join(process.cwd(), "frontend/dist");
 
 if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
-  app.get("*", (req, res) => {
+
+  // Pour toutes les routes non-API, renvoyer index.html
+  app.get(/^(?!\/api).*$/, (req, res) => {
     res.sendFile(path.join(frontendDistPath, "index.html"));
   });
 } else {
-  console.warn(
-    "⚠️ Build frontend introuvable ! Le frontend sera inaccessible."
-  );
+  console.warn("⚠️ Build frontend introuvable ! Le frontend sera inaccessible.");
 }
 
 // Connexion MongoDB et démarrage du serveur
@@ -67,5 +58,3 @@ mongoose
     app.listen(port, () => console.log(`🚀 Serveur démarré sur le port ${port}`));
   })
   .catch((err) => console.error("❌ Erreur MongoDB:", err));
-
-  
