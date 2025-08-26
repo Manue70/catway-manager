@@ -27,7 +27,6 @@ function AddCatway({ token }) {
         },
         body: JSON.stringify({ catwayNumber, catwayType, catwayState }),
       });
-
       const data = await res.json();
 
       if (res.ok) {

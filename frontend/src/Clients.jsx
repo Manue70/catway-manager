@@ -14,12 +14,8 @@ function Clients({ token }) {
     const fetchUsers = async () => {
       try {
         const res = await fetch(`${API_URL}/api/users`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
-
         if (!res.ok) throw new Error(`Erreur ${res.status}`);
         const data = await res.json();
         setUsers(data);
@@ -38,12 +34,8 @@ function Clients({ token }) {
     try {
       const res = await fetch(`${API_URL}/api/users/${id}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       });
-
       if (!res.ok) throw new Error("Erreur suppression");
       setUsers(users.filter((u) => u._id !== id));
       if (selectedUser && selectedUser._id === id) setSelectedUser(null);
@@ -58,13 +50,9 @@ function Clients({ token }) {
     try {
       const res = await fetch(`${API_URL}/api/users`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(newUser),
       });
-
       if (!res.ok) throw new Error("Erreur création utilisateur");
       const createdUser = await res.json();
       setUsers([...users, createdUser]);
@@ -78,12 +66,8 @@ function Clients({ token }) {
   const handleDetails = async (id) => {
     try {
       const res = await fetch(`${API_URL}/api/users/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       });
-
       if (!res.ok) throw new Error("Erreur récupération détails");
       const user = await res.json();
       setSelectedUser(user);
@@ -99,7 +83,7 @@ function Clients({ token }) {
   return (
     <div className="ClientsContainer">
       <h2>Gestion des Clients</h2>
-      {/* Formulaire création */}
+
       <form onSubmit={handleCreate} className="createUserForm">
         <input type="email" placeholder="Email" value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} required />
         <input type="password" placeholder="Mot de passe" value={newUser.password} onChange={(e) => setNewUser({ ...newUser, password: e.target.value })} required />
@@ -109,18 +93,10 @@ function Clients({ token }) {
         </select>
         <button type="submit">Créer</button>
       </form>
-      {/* Tableau des utilisateurs */}
-      {users.length === 0 ? (
-        <p>Aucun utilisateur disponible</p>
-      ) : (
+
+      {users.length === 0 ? <p>Aucun utilisateur disponible</p> : (
         <table>
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Rôle</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Email</th><th>Rôle</th><th>Actions</th></tr></thead>
           <tbody>
             {users.map((user) => (
               <tr key={user._id}>
@@ -135,7 +111,7 @@ function Clients({ token }) {
           </tbody>
         </table>
       )}
-      {/* Affichage des détails */}
+
       {selectedUser && (
         <div className="userDetails">
           <h3>Détails de l'utilisateur</h3>

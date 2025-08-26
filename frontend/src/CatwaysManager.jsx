@@ -7,12 +7,19 @@ function CatwaysManager({ token }) {
   const [catways, setCatways] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/catways`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => setCatways(data))
-      .catch((err) => console.error(err));
+    const fetchCatways = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/catways`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error("Erreur récupération catways");
+        const data = await res.json();
+        setCatways(data);
+      } catch (err) {
+        console.error("Erreur récupération catways :", err);
+      }
+    };
+    fetchCatways();
   }, [token]);
 
   const handleDelete = (id) => {
