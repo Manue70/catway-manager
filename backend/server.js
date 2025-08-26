@@ -16,7 +16,9 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors()); 
+ app.use(cors({
+  origin: "https://catway-manager-1.onrender.com"
+}));
 app.use(express.json());
 
 // Routes API
