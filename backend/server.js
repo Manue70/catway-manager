@@ -28,29 +28,37 @@ app.use(
 );
 app.use(express.json());
 
-// Routes API
+// ===== Routes API =====
 app.use("/api/auth", authRoutes);
 app.use("/api/catways", catwayRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/addReservation", addReservationRoutes);
 app.use("/api/users", usersRouter);
 
-// ===== Servir le build Vite (frontend/dist) =====
-
-// Remplacer __dirname pour ES modules
+// ===== Remplacer __dirname pour ES modules =====
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Chemin vers le build frontend
-let frontendDistPath = path.join(__dirname, "../frontend/dist");
+// ===== Servir swagger.yaml =====
+app.get("/swagger.yaml", (req, res) => {
+  const swaggerPath = path.join(__dirname, "../backend/swagger.yaml");
+  if (fs.existsSync(swaggerPath)) {
+    res.sendFile(swaggerPath);
+  } else {
+    res.status(404).send("Swagger.yaml introuvable !");
+  }
+});
 
-// Si Render ne le trouve pas à ce chemin, on tente process.cwd()
+// ===== Servir le build Vite (frontend/dist) =====
+let frontendDistPath = path.join(__dirname, "../frontend/dist");
 if (!fs.existsSync(frontendDistPath)) {
   frontendDistPath = path.join(process.cwd(), "frontend/dist");
 }
 
 if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
+
+  // Important : toutes les autres routes renvoient index.html (SPA)
   app.get("*", (req, res) => {
     res.sendFile(path.join(frontendDistPath, "index.html"));
   });

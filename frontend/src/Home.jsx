@@ -1,4 +1,5 @@
 
+
 import React, { useState } from "react";
 import { API_URL } from "./config";
 import "./Home.css";
@@ -44,7 +45,7 @@ function Home({ onLogin }) {
       <div className="home-links">
         <a href={`${API_URL}/swagger.yaml`} target="_blank" rel="noopener noreferrer">Documentation Swagger</a>
         <br />
-        <a href="https://github.com/Manue70/mon-projet/blob/main/backend/README.md" target="_blank" rel="noopener noreferrer">README GitHub</a>
+        <a href="https://github.com/Manue70/catway-manager/blob/main/README.md" target="_blank" rel="noopener noreferrer">README GitHub</a>
       </div>
     </>
   );
