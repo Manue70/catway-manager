@@ -17,6 +17,7 @@ const app = express();
 
 // Middleware
  app.use(cors({
+  origin: "http://localhost:5173",  // Vite dev local
   origin: "https://catway-manager-1.onrender.com"
 }));
 app.use(express.json());
