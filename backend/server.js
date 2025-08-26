@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 
 import authRoutes from "./routes/auth.js";
 import catwayRoutes from "./routes/catways.js";
@@ -18,11 +19,6 @@ const app = express();
 app.use(cors()); 
 app.use(express.json());
 
-
-app.get("/", (req, res) => {
-  res.send("✅ API Catways fonctionne !");
-});
-
 // Routes API
 app.use("/api/auth", authRoutes);
 app.use("/api/catways", catwayRoutes);
@@ -30,7 +26,15 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/addReservation", addReservationRoutes);
 app.use("/api/users", usersRouter);
 
-// Connexion MongoDB
+// Servir le build Vite (frontend/dist)
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
+});
+
+// Connexion MongoDB et démarrage du serveur
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -40,3 +44,4 @@ mongoose
     );
   })
   .catch((err) => console.error("❌ Erreur MongoDB:", err));
+
