@@ -28,11 +28,18 @@ app.use("/api/users", usersRouter);
 
 // Servir le build Vite (frontend/dist)
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+const frontendDistPath = path.join(__dirname, "../frontend/dist");
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-});
+// Vérifie que le dossier build existe avant de servir
+import fs from "fs";
+if (!fs.existsSync(frontendDistPath)) {
+  console.warn("⚠️ Build frontend introuvable ! Vérifie que 'frontend/dist' est push sur GitHub.");
+} else {
+  app.use(express.static(frontendDistPath));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendDistPath, "index.html"));
+  });
+}
 
 // Connexion MongoDB et démarrage du serveur
 mongoose
@@ -44,4 +51,3 @@ mongoose
     );
   })
   .catch((err) => console.error("❌ Erreur MongoDB:", err));
-
