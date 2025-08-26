@@ -28,13 +28,26 @@ function Catways({ token, userRole }) {
           },
         });
 
-        if (!res.ok) throw new Error(`Erreur ${res.status}`);
-        const data = await res.json();
+        console.log("Réponse API:", res);
 
-        if (Array.isArray(data)) setCatways(data);
-        else setError("Les données renvoyées ne sont pas valides");
+        if (!res.ok) {
+          const text = await res.text();
+          console.error("Erreur API:", res.status, text);
+          throw new Error(`Erreur API ${res.status}`);
+        }
+
+        const data = await res.json();
+        console.log("Données reçues:", data);
+
+        if (Array.isArray(data)) {
+          setCatways(data);
+        } else if (data.catways && Array.isArray(data.catways)) {
+          setCatways(data.catways);
+        } else {
+          setError("Format de données inattendu depuis l’API");
+        }
       } catch (err) {
-        console.error("Erreur récupération catways :", err);
+        console.error("Erreur récupération catways:", err);
         setError("Impossible de charger les catways");
       } finally {
         setLoading(false);
@@ -206,4 +219,3 @@ function Catways({ token, userRole }) {
 }
 
 export default Catways;
-
