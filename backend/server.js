@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url"; // <-- pour __dirname en ES module
 
 import authRoutes from "./routes/auth.js";
 import catwayRoutes from "./routes/catways.js";
@@ -33,14 +35,14 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/addReservation", addReservationRoutes);
 app.use("/api/users", usersRouter);
 
-// Servir le build Vite (frontend/dist)
-import fs from "fs";
+// --- Servir le build Vite (frontend/dist) ---
+// Création de __dirname en ES Module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Chemin vers le build : Render place le repo complet à la racine
-// __dirname = backend, donc frontend/dist = ../frontend/dist
 let frontendDistPath = path.join(__dirname, "../frontend/dist");
 
-// Si le build n’existe pas (sur Render) on tente un chemin relatif au root
+// Si le build n’existe pas, on tente un chemin relatif au root (Render)
 if (!fs.existsSync(frontendDistPath)) {
   frontendDistPath = path.join(process.cwd(), "frontend/dist");
 }
@@ -65,3 +67,5 @@ mongoose
     app.listen(port, () => console.log(`🚀 Serveur démarré sur le port ${port}`));
   })
   .catch((err) => console.error("❌ Erreur MongoDB:", err));
+
+  
