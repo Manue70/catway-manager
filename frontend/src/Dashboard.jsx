@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { format } from "date-fns";
-import { API_URL } from "../config";
+import { API_URL } from "./config";
 import "./Dashboard.css";
 
 function Dashboard({ token }) {

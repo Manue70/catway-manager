@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "../config";
+import { API_URL } from "./config";
 import "./Catways.css";
 
 function Catways({ token, userRole }) {
