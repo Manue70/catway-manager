@@ -21,13 +21,14 @@ function Reservations() {
       <table className="reservations-table">
         <thead>
           <tr>
-            <th>Catway</th>
+            <th>Numéro de Catway</th>
             <th>Bateau</th>
             <th>Client</th>
             <th>Début</th>
             <th>Fin</th>
           </tr>
         </thead>
+
         <tbody>
           {reservations.map((resv) => (
             <tr key={resv._id}>
