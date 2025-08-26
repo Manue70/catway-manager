@@ -15,10 +15,15 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors()); // ⚠️ simple pour tester Render
+app.use(cors()); 
 app.use(express.json());
 
-// Routes
+
+app.get("/", (req, res) => {
+  res.send("✅ API Catways fonctionne !");
+});
+
+// Routes API
 app.use("/api/auth", authRoutes);
 app.use("/api/catways", catwayRoutes);
 app.use("/api/reservations", reservationRoutes);
@@ -35,4 +40,3 @@ mongoose
     );
   })
   .catch((err) => console.error("❌ Erreur MongoDB:", err));
-
