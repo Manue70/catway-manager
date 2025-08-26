@@ -15,11 +15,15 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
- app.use(cors({
-  origin: "http://localhost:5173",  // Vite dev local
-  origin: "https://catway-manager-1.onrender.com"
-}));
+// Middleware CORS
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // Vite dev local
+      "https://catway-manager-1.onrender.com", // Render
+    ],
+  })
+);
 app.use(express.json());
 
 // Routes API
@@ -30,18 +34,26 @@ app.use("/api/addReservation", addReservationRoutes);
 app.use("/api/users", usersRouter);
 
 // Servir le build Vite (frontend/dist)
-const __dirname = path.resolve();
-const frontendDistPath = path.join(__dirname, "../frontend/dist");
-
-// Vérifie que le dossier build existe avant de servir
 import fs from "fs";
+
+// Chemin vers le build : Render place le repo complet à la racine
+// __dirname = backend, donc frontend/dist = ../frontend/dist
+let frontendDistPath = path.join(__dirname, "../frontend/dist");
+
+// Si le build n’existe pas (sur Render) on tente un chemin relatif au root
 if (!fs.existsSync(frontendDistPath)) {
-  console.warn("⚠️ Build frontend introuvable ! Vérifie que 'frontend/dist' est push sur GitHub.");
-} else {
+  frontendDistPath = path.join(process.cwd(), "frontend/dist");
+}
+
+if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
   app.get("*", (req, res) => {
     res.sendFile(path.join(frontendDistPath, "index.html"));
   });
+} else {
+  console.warn(
+    "⚠️ Build frontend introuvable ! Le frontend sera inaccessible."
+  );
 }
 
 // Connexion MongoDB et démarrage du serveur
@@ -49,8 +61,7 @@ mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("✅ MongoDB connecté");
-    app.listen(process.env.PORT || 5000, () =>
-      console.log(`🚀 Serveur démarré sur le port ${process.env.PORT || 5000}`)
-    );
+    const port = process.env.PORT || 5000;
+    app.listen(port, () => console.log(`🚀 Serveur démarré sur le port ${port}`));
   })
   .catch((err) => console.error("❌ Erreur MongoDB:", err));
