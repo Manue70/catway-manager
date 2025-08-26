@@ -40,7 +40,7 @@ function App() {
       <Routes>
         {/* Routes publiques */}
         <Route path="/" element={<Home onLogin={handleLogin} />} />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/login" element={<Login onLoginSuccess={handleLogin} />} />
         <Route path="/manager" element={<Manager token={token} />} />
         <Route path="/catways" element={<Catways token={token} userRole={userRole} />} />
         <Route path="/reservations" element={<Reservations token={token} />} />
