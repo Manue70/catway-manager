@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "url"; // ⚠️ Pour remplacer __dirname en ES module
 
 import authRoutes from "./routes/auth.js";
 import catwayRoutes from "./routes/catways.js";
@@ -20,8 +21,8 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",
-      "https://catway-manager-1.onrender.com",
+      "http://localhost:5173", // Vite dev local
+      "https://catway-manager-1.onrender.com", // Render
     ],
   })
 );
@@ -34,8 +35,19 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/addReservation", addReservationRoutes);
 app.use("/api/users", usersRouter);
 
-// Servir le build Vite
-let frontendDistPath = path.join(process.cwd(), "frontend/dist");
+// ===== Servir le build Vite (frontend/dist) =====
+
+// Remplacer __dirname pour ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Chemin vers le build frontend
+let frontendDistPath = path.join(__dirname, "../frontend/dist");
+
+// Si Render ne le trouve pas à ce chemin, on tente process.cwd()
+if (!fs.existsSync(frontendDistPath)) {
+  frontendDistPath = path.join(process.cwd(), "frontend/dist");
+}
 
 if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
@@ -46,7 +58,7 @@ if (fs.existsSync(frontendDistPath)) {
   console.warn("⚠️ Build frontend introuvable ! Le frontend sera inaccessible.");
 }
 
-// Connexion MongoDB et lancement du serveur
+// ===== Connexion MongoDB et lancement du serveur =====
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
